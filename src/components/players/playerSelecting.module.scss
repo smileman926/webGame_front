@@ -1,0 +1,17 @@
+@import "../../UI/styles/mixins";
+
+.playerSelecting {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5rem;
+
+  @include respond(phone) {
+    flex-direction: column;
+    padding: 0;
+  }
+}
