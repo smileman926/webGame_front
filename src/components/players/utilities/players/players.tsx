@@ -3,26 +3,50 @@ import PlayersCard from "../../../cards/playersCard/playersCard";
 import Button from "../../../buttons/button/button";
 
 import GemImage from "../../../../assets/images/gem.png";
+import React, { useEffect, useState } from "react";
+import { useWeb3React } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
+import {
+  getAllActive,
+  getGame,
+} from "../../../../chain/hooks/useBattleContractFunctions";
+import useBattleContract from "../../../../chain/hooks/useBattleContract";
+import { BigNumber } from "ethers";
+import { GameType } from "../../../../chain/types/game.type";
 
 const Players = () => {
-  const playersData = [
-    ["p1", "Vladimir Putin", 5000],
-    ["p2", "Micheal Saylor", 15000],
-    ["p3", "Cz Binance", 25000],
-    ["p4", "Elon Doge Musk", 200],
-    ["p5", "Volodimir Zelsky", 2000],
-    ["p6", "Alia Koca", 25000],
-    ["p7", "Thomas", 700],
-    ["p8", "King Abraham", 10],
-    ["p9", "Yousef Al Luma", 20],
-    ["p10", "Kindal Must", 1000],
-    ["p11", "King of crypto", 100000],
-    ["p12", "Billy Markus", 44000],
-  ];
+  const { account } = useWeb3React<Web3Provider>();
+  const Battle = useBattleContract();
+  const [refresh, setRefresh] = useState(false);
+  const [allGames, setAllGames] = useState<GameType[]>([]);
+  useEffect(() => {
+    if (account && Battle) {
+      getAllActiveGames();
+    }
+  }, [Battle, account, refresh]);
 
-  const onAcceptButtonClick = (userId) => {
-    console.log(userId + " Accepted");
+  const getAllActiveGames = async () => {
+    const allGames = await getAllActive(Battle!, account!);
+
+    console.log("allGames", allGames);
+    const gamesDetails: GameType[] = [];
+    for await (const item of allGames) {
+      const gameDetails = await getGame(Battle!, item, account!);
+      gamesDetails.push(gameDetails!);
+    }
+    console.log("gamesDetails", gamesDetails);
+    setAllGames(gamesDetails);
   };
+
+  const onAcceptButtonClick = (game: GameType) => {
+    joinGame(game);
+  };
+
+  const joinGame = async (game: GameType) => {
+    const join = await joinGame(game);
+    setRefresh(!refresh);
+  };
+
   return (
     <PlayersCard>
       <div className={classes.players}>
@@ -36,14 +60,14 @@ const Players = () => {
           <div className={classes.players__header_colThree}>
             <p>
               Total offers:{" "}
-              {playersData && playersData.length > 0 ? playersData.length : "-"}
+              {allGames && allGames.length > 0 ? allGames.length : "-"}
             </p>
           </div>
         </div>
         <div className={classes.players__content}>
           <div className={classes.players__content_col}>
-            {playersData &&
-              playersData.map((player, index) => {
+            {allGames &&
+              allGames.map((player, index) => {
                 return (
                   <div
                     key={player[0]}
@@ -54,20 +78,20 @@ const Players = () => {
                     }
                   >
                     <div className={classes.players__content_col_whiteRow_name}>
-                      <p>{player[1]}</p>
+                      <p>{player.state}</p>
                     </div>
                     <div
                       className={classes.players__content_col_whiteRow_amount}
                     >
                       <img src={GemImage} alt="gem"></img>
-                      <p>{player[2].toLocaleString()}</p>
+                      <p>{player.stakes}</p>
                     </div>
                     <div
                       className={classes.players__content_col_whiteRow_action}
                     >
                       <Button
                         onClick={() => {
-                          onAcceptButtonClick(player[0]);
+                          onAcceptButtonClick(player);
                         }}
                         color="var(--color-green-3)"
                       >

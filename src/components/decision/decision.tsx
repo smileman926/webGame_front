@@ -1,9 +1,22 @@
+import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from "@web3-react/core";
+import React from "react";
 import { useState } from "react";
+import { createGame } from "../../chain/hooks/useBattleContractFunctions";
+import useBattleContract from "../../chain/hooks/useBattleContract";
+import Button from "../buttons/button/button";
 import classes from "./decision.module.scss";
 
 const Decision = () => {
-  const [betLimit, setBetLimit] = useState();
+  const Battle = useBattleContract();
+  const { account } = useWeb3React<Web3Provider>();
+  const [betLimit, setBetLimit] = useState(9);
 
+  const onCreateGameClicked = () => {
+    if (Battle && account) {
+      createGame(Battle, betLimit, account);
+    }
+  };
   const dificultyStates = [
     ["EASY", 9, 101],
     ["MEDIUM", 100, 1001],
@@ -35,9 +48,17 @@ const Decision = () => {
       <div className={classes.decision__input}>
         <input
           type="number"
-          onChange={(e) => setBetLimit(e.target.value)}
+          onChange={(e) => setBetLimit(Number(e.target.value))}
         ></input>
       </div>
+      <Button
+        onClick={() => {
+          onCreateGameClicked();
+        }}
+        color="var(--color-green-3)"
+      >
+        Create Game
+      </Button>
     </div>
   );
 };
