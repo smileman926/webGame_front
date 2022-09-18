@@ -41,8 +41,12 @@ export const setWalletConnectConnectionStatus = (
 };
 
 export const weiToEther = (amount: BigNumber): string => {
-  const res = ethers.utils.formatEther(amount);
-  return res;
+  try {
+    const res = ethers.utils.formatEther(amount);
+    return res;
+  } catch (e) {
+    return `${Number(amount)}e18`;
+  }
 };
 
 export const etherToWei = (amount: number): BigNumber => {
@@ -53,7 +57,7 @@ export const etherToWei = (amount: number): BigNumber => {
 let PROVIDER: ethers.providers.BaseProvider;
 
 const getRPC = (): string => {
-  // return 'https://rpc-mumbai.matic.today';
+  // return "https://polygon-mainnet.g.alchemy.com/v2/W5j16j4pEFEiDbXGD3FhInh5HpuMTLMg";
   return "https://rpc-mumbai.maticvigil.com/";
   // return 'https://polygon-rpc.com';
   // return 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
@@ -68,6 +72,7 @@ const getProvider = (): ethers.providers.BaseProvider => {
   PROVIDER = ethers.providers.getDefaultProvider(getRPC());
   return PROVIDER;
 };
+
 
 export const getTransactionOptions = async (
   account: string,

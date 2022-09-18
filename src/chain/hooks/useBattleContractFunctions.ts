@@ -1,7 +1,8 @@
-import { BigNumber } from "ethers";
 import type { Battle } from "../contracts/typechains/Battle";
 import { GameStatus } from "../enums/game-status.enum";
-import { getTransactionOptions } from "../tools/chain-utils";
+import {
+  getTransactionOptions,
+} from "../tools/chain-utils";
 import { GameType } from "../types/game.type";
 
 export const createGame = async (
@@ -10,9 +11,10 @@ export const createGame = async (
   acount: string
 ) => {
   try {
+    // const inWei = etherToWei(bet)
     const tx = await battle.createGame(
       bet,
-      await getTransactionOptions(acount, 1)
+      await getTransactionOptions(acount, 0.05)
     );
     const res = await tx.wait();
     return res;
@@ -55,7 +57,7 @@ export const getGame = async (
   }
   return {
     id: id,
-    state: GameStatus.HASNOTPLAYERONE,
+    state: GameStatus.HASNOTPLAYER,
     stakes: 0,
     player1: "",
     player2: "",
@@ -69,7 +71,10 @@ export const joinGame = async (
   account: string
 ): Promise<boolean> => {
   try {
-    const tx = await battle.joinGame(id, await getTransactionOptions(account));
+    const tx = await battle.joinGame(
+      id,
+      await getTransactionOptions(account, 0.05)
+    );
     const res = await tx.wait();
     return res as unknown as boolean;
   } catch (e) {
@@ -81,7 +86,7 @@ export const joinGame = async (
 const findGameStatus = (status: number): GameStatus => {
   switch (status) {
     case 0:
-      return GameStatus.HASNOTPLAYERONE;
+      return GameStatus.HASNOTPLAYER;
     case 1:
       return GameStatus.HASPLAYERONE;
     case 2:
@@ -90,6 +95,6 @@ const findGameStatus = (status: number): GameStatus => {
       return GameStatus.HASWINNER;
 
     default:
-      return GameStatus.HASNOTPLAYERONE;
+      return GameStatus.HASNOTPLAYER;
   }
 };
