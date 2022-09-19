@@ -6,15 +6,23 @@ import { createGame } from "../../chain/hooks/useBattleContractFunctions";
 import useBattleContract from "../../chain/hooks/useBattleContract";
 import Button from "../buttons/button/button";
 import classes from "./decision.module.scss";
+import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 
 const Decision = () => {
   const Battle = useBattleContract();
   const { account } = useWeb3React<Web3Provider>();
   const [betLimit, setBetLimit] = useState(9);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onCreateGameClicked = () => {
+  const onCreateGameClicked = async () => {
     if (Battle && account) {
-      createGame(Battle, betLimit, account);
+      setIsLoading(true);
+      try {
+        await createGame(Battle, betLimit, account);
+        setIsLoading(false);
+      } catch (e) {
+        setIsLoading(false);
+      }
     }
   };
   const dificultyStates = [
@@ -51,14 +59,18 @@ const Decision = () => {
           onChange={(e) => setBetLimit(Number(e.target.value))}
         ></input>
       </div>
-      <Button
-        onClick={() => {
-          onCreateGameClicked();
-        }}
-        color="var(--color-green-3)"
-      >
-        Create Game
-      </Button>
+      {isLoading ? (
+        LoadingSpinner()
+      ) : (
+        <Button
+          onClick={() => {
+            onCreateGameClicked();
+          }}
+          color="var(--color-green-3)"
+        >
+          Create Game
+        </Button>
+      )}
     </div>
   );
 };
