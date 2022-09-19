@@ -73,7 +73,6 @@ const getProvider = (): ethers.providers.BaseProvider => {
   return PROVIDER;
 };
 
-
 export const getTransactionOptions = async (
   account: string,
   value: number = 0

@@ -21,6 +21,8 @@ import useMainContract from "../../../../chain/hooks/useMainContract";
 import { BATTLE_ADDRESS } from "../../../../chain/constances";
 import { GameStatus } from "../../../../chain/enums/game-status.enum";
 import { makeAddressShort } from "../../../../utils/account-utils";
+import { weiToEther } from "../../../../chain/tools/chain-utils";
+import { BigNumber } from "ethers";
 
 const Players = () => {
   const { account } = useWeb3React<Web3Provider>();
@@ -65,6 +67,15 @@ const Players = () => {
     )} `;
   };
 
+  const getGameStakes = (player: GameType): string => {
+    try {
+      return weiToEther(BigNumber.from(`${player.stakes}`));
+    } catch (e) {
+      console.log(e);
+    }
+    return "0";
+  };
+
   return (
     <PlayersCard>
       <div className={classes.players}>
@@ -102,8 +113,7 @@ const Players = () => {
                       className={classes.players__content_col_whiteRow_amount}
                     >
                       <img src={GemImage} alt="gem"></img>
-                      <p>{player.stakes}</p>
-                      {/* <p>{weiToEther(BigNumber.from(player.stakes))}</p> */}
+                      <p>{getGameStakes(player)}</p>
                     </div>
                     <div
                       className={classes.players__content_col_whiteRow_action}

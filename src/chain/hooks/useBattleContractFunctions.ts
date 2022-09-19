@@ -1,8 +1,6 @@
 import type { Battle } from "../contracts/typechains/Battle";
 import { GameStatus } from "../enums/game-status.enum";
-import {
-  getTransactionOptions,
-} from "../tools/chain-utils";
+import { etherToWei, getTransactionOptions } from "../tools/chain-utils";
 import { GameType } from "../types/game.type";
 
 export const createGame = async (
@@ -11,9 +9,9 @@ export const createGame = async (
   acount: string
 ) => {
   try {
-    // const inWei = etherToWei(bet)
+    const inWei = etherToWei(bet);
     const tx = await battle.createGame(
-      bet,
+      inWei,
       await getTransactionOptions(acount, 0.05)
     );
     const res = await tx.wait();
