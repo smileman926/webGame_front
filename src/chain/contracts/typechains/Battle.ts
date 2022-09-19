@@ -30,17 +30,18 @@ import type {
 
 export interface BattleInterface extends utils.Interface {
   functions: {
-    "Endgame(uint256,address)": FunctionFragment;
     "Gamelist(uint256)": FunctionFragment;
     "LPstaking()": FunctionFragment;
-    "PlayingOn(address)": FunctionFragment;
+    "cancel(uint256)": FunctionFragment;
     "createGame(uint256)": FunctionFragment;
-    "getAllActive()": FunctionFragment;
+    "endgame(uint256,address)": FunctionFragment;
+    "getAllActive(uint256)": FunctionFragment;
     "getGame(uint256)": FunctionFragment;
     "getState(uint256)": FunctionFragment;
     "joinGame(uint256)": FunctionFragment;
     "latestGame()": FunctionFragment;
     "owner()": FunctionFragment;
+    "playingOn(address)": FunctionFragment;
     "renouceOwner()": FunctionFragment;
     "setOperator(address)": FunctionFragment;
     "setOwner(address)": FunctionFragment;
@@ -52,17 +53,18 @@ export interface BattleInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "Endgame"
       | "Gamelist"
       | "LPstaking"
-      | "PlayingOn"
+      | "cancel"
       | "createGame"
+      | "endgame"
       | "getAllActive"
       | "getGame"
       | "getState"
       | "joinGame"
       | "latestGame"
       | "owner"
+      | "playingOn"
       | "renouceOwner"
       | "setOperator"
       | "setOwner"
@@ -73,25 +75,25 @@ export interface BattleInterface extends utils.Interface {
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "Endgame",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "Gamelist",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "LPstaking", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "PlayingOn",
-    values: [PromiseOrValue<string>]
+    functionFragment: "cancel",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "createGame",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "endgame",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getAllActive",
-    values?: undefined
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getGame",
@@ -110,6 +112,10 @@ export interface BattleInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "playingOn",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "renouceOwner",
     values?: undefined
@@ -136,11 +142,11 @@ export interface BattleInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "team", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "Endgame", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "Gamelist", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "LPstaking", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "PlayingOn", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "cancel", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "createGame", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "endgame", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getAllActive",
     data: BytesLike
@@ -150,6 +156,7 @@ export interface BattleInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "joinGame", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "latestGame", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "playingOn", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renouceOwner",
     data: BytesLike
@@ -238,12 +245,6 @@ export interface Battle extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    Endgame(
-      id: PromiseOrValue<BigNumberish>,
-      winner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     Gamelist(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -260,19 +261,26 @@ export interface Battle extends BaseContract {
 
     LPstaking(overrides?: CallOverrides): Promise<[string]>;
 
-    PlayingOn(
-      _add: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    cancel(
+      _id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     createGame(
       _bet: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    endgame(
+      id: PromiseOrValue<BigNumberish>,
+      winner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     getAllActive(
+      _start: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber[], BigNumber, BigNumber, BigNumber]>;
+    ): Promise<[BigNumber[], BigNumber[]]>;
 
     getGame(
       _id: PromiseOrValue<BigNumberish>,
@@ -292,6 +300,11 @@ export interface Battle extends BaseContract {
     latestGame(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
+
+    playingOn(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     renouceOwner(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -325,12 +338,6 @@ export interface Battle extends BaseContract {
     team(overrides?: CallOverrides): Promise<[string]>;
   };
 
-  Endgame(
-    id: PromiseOrValue<BigNumberish>,
-    winner: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   Gamelist(
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -347,19 +354,26 @@ export interface Battle extends BaseContract {
 
   LPstaking(overrides?: CallOverrides): Promise<string>;
 
-  PlayingOn(
-    _add: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  cancel(
+    _id: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   createGame(
     _bet: PromiseOrValue<BigNumberish>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  endgame(
+    id: PromiseOrValue<BigNumberish>,
+    winner: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   getAllActive(
+    _start: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<[BigNumber[], BigNumber, BigNumber, BigNumber]>;
+  ): Promise<[BigNumber[], BigNumber[]]>;
 
   getGame(
     _id: PromiseOrValue<BigNumberish>,
@@ -379,6 +393,11 @@ export interface Battle extends BaseContract {
   latestGame(overrides?: CallOverrides): Promise<BigNumber>;
 
   owner(overrides?: CallOverrides): Promise<string>;
+
+  playingOn(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   renouceOwner(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -412,12 +431,6 @@ export interface Battle extends BaseContract {
   team(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    Endgame(
-      id: PromiseOrValue<BigNumberish>,
-      winner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
     Gamelist(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -434,10 +447,10 @@ export interface Battle extends BaseContract {
 
     LPstaking(overrides?: CallOverrides): Promise<string>;
 
-    PlayingOn(
-      _add: PromiseOrValue<string>,
+    cancel(
+      _id: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<boolean>;
 
     createGame(
       _bet: PromiseOrValue<BigNumberish>,
@@ -450,9 +463,16 @@ export interface Battle extends BaseContract {
       }
     >;
 
-    getAllActive(
+    endgame(
+      id: PromiseOrValue<BigNumberish>,
+      winner: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber[], BigNumber, BigNumber, BigNumber]>;
+    ): Promise<boolean>;
+
+    getAllActive(
+      _start: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[], BigNumber[]]>;
 
     getGame(
       _id: PromiseOrValue<BigNumberish>,
@@ -472,6 +492,11 @@ export interface Battle extends BaseContract {
     latestGame(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<string>;
+
+    playingOn(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     renouceOwner(overrides?: CallOverrides): Promise<void>;
 
@@ -539,12 +564,6 @@ export interface Battle extends BaseContract {
   };
 
   estimateGas: {
-    Endgame(
-      id: PromiseOrValue<BigNumberish>,
-      winner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     Gamelist(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -552,9 +571,9 @@ export interface Battle extends BaseContract {
 
     LPstaking(overrides?: CallOverrides): Promise<BigNumber>;
 
-    PlayingOn(
-      _add: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    cancel(
+      _id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     createGame(
@@ -562,7 +581,16 @@ export interface Battle extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getAllActive(overrides?: CallOverrides): Promise<BigNumber>;
+    endgame(
+      id: PromiseOrValue<BigNumberish>,
+      winner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getAllActive(
+      _start: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getGame(
       _id: PromiseOrValue<BigNumberish>,
@@ -582,6 +610,11 @@ export interface Battle extends BaseContract {
     latestGame(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    playingOn(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     renouceOwner(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -616,12 +649,6 @@ export interface Battle extends BaseContract {
   };
 
   populateTransaction: {
-    Endgame(
-      id: PromiseOrValue<BigNumberish>,
-      winner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     Gamelist(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -629,9 +656,9 @@ export interface Battle extends BaseContract {
 
     LPstaking(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    PlayingOn(
-      _add: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    cancel(
+      _id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     createGame(
@@ -639,7 +666,16 @@ export interface Battle extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getAllActive(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    endgame(
+      id: PromiseOrValue<BigNumberish>,
+      winner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getAllActive(
+      _start: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     getGame(
       _id: PromiseOrValue<BigNumberish>,
@@ -659,6 +695,11 @@ export interface Battle extends BaseContract {
     latestGame(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    playingOn(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     renouceOwner(
       overrides?: Overrides & { from?: PromiseOrValue<string> }

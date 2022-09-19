@@ -7,17 +7,26 @@ import useBattleContract from "../../chain/hooks/useBattleContract";
 import Button from "../buttons/button/button";
 import classes from "./decision.module.scss";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
+import { approve } from "../../chain/hooks/useMainContractFunctions";
+import { BATTLE_ADDRESS } from "../../chain/constances";
+import { etherToWei } from "../../chain/tools/chain-utils";
+import useMainContract from "../../chain/hooks/useMainContract";
 
 const Decision = () => {
   const Battle = useBattleContract();
   const { account } = useWeb3React<Web3Provider>();
   const [betLimit, setBetLimit] = useState(9);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const MainToken = useMainContract();
 
   const onCreateGameClicked = async () => {
     if (Battle && account) {
       setIsLoading(true);
       try {
+        const inWei = etherToWei(betLimit);
+
+        const a = await approve(MainToken!, BATTLE_ADDRESS, inWei);
+
         await createGame(Battle, betLimit, account);
         setIsLoading(false);
       } catch (e) {

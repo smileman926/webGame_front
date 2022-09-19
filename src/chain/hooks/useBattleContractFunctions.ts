@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 import type { Battle } from "../contracts/typechains/Battle";
 import { GameStatus } from "../enums/game-status.enum";
 import { etherToWei, getTransactionOptions } from "../tools/chain-utils";
@@ -26,7 +27,10 @@ export const getAllActive = async (
   account: string
 ): Promise<number[]> => {
   try {
-    const tx = await battle.getAllActive(await getTransactionOptions(account));
+    const tx = await battle.getAllActive(
+      1,
+      await getTransactionOptions(account)
+    );
     return tx[0] as unknown as number[];
   } catch (e) {
     console.log(e);
@@ -44,7 +48,7 @@ export const getGame = async (
     const game = {
       id: id,
       state: findGameStatus(Number(tx[0])),
-      stakes: Number(tx[1]),
+      stakes: tx[1],
       player1: tx[2],
       player2: tx[3],
       winner: tx[4],
@@ -56,7 +60,7 @@ export const getGame = async (
   return {
     id: id,
     state: GameStatus.HASNOTPLAYER,
-    stakes: 0,
+    stakes: BigNumber.from("0"),
     player1: "",
     player2: "",
     winner: "",

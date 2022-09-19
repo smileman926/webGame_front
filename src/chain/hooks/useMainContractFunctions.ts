@@ -1,9 +1,10 @@
+import { BigNumber } from "ethers";
 import { IERC20 } from "../contracts/typechains/IERC20";
 
 export const approve = async (
   mainToken: IERC20,
   to: string,
-  amount: number
+  amount: BigNumber
 ) => {
   try {
     const tx = await mainToken.approve(to, amount);
