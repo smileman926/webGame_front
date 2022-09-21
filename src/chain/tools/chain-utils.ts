@@ -1,6 +1,10 @@
 import { BigNumber, ethers } from "ethers";
+import { isMobile } from "react-device-detect";
 
 export const connectMetamaskOnLoad = () => {
+  if (isMobile) {
+    return false;
+  }
   const isConnected = localStorage.getItem("metamask-connected");
   if (isConnected) {
     const c = isConnected as unknown as boolean;

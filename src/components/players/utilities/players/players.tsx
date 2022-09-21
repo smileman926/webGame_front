@@ -25,7 +25,7 @@ const Players = () => {
 
   const getAllActiveGames = async () => {
     const allGames = await getAllActive(Battle!, account!);
-
+    console.log("allGames", allGames);
     const gamesDetails: GameType[] = [];
     for await (const item of allGames) {
       const gameDetails = await getGame(Battle!, item, account!);
