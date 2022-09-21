@@ -36,8 +36,20 @@ export interface BattleInterface extends utils.Interface {
     "createGame(uint256)": FunctionFragment;
     "endgame(uint256,address)": FunctionFragment;
     "getAllActive(uint256)": FunctionFragment;
+    "getAllDrawnOf(address)": FunctionFragment;
+    "getAllLostOf(address)": FunctionFragment;
+    "getAllPlayedOf(address)": FunctionFragment;
+    "getAllWonOf(address)": FunctionFragment;
+    "getDrawPercentageOf(address)": FunctionFragment;
     "getGame(uint256)": FunctionFragment;
+    "getLoosePercentageOf(address)": FunctionFragment;
     "getState(uint256)": FunctionFragment;
+    "getTotalGamesDrawnOf(address)": FunctionFragment;
+    "getTotalLostOf(address)": FunctionFragment;
+    "getTotalPlayedOf(address)": FunctionFragment;
+    "getTotalWonOf(address)": FunctionFragment;
+    "getWLOf(address)": FunctionFragment;
+    "getWinPercentageOf(address)": FunctionFragment;
     "joinGame(uint256)": FunctionFragment;
     "latestGame()": FunctionFragment;
     "owner()": FunctionFragment;
@@ -59,8 +71,20 @@ export interface BattleInterface extends utils.Interface {
       | "createGame"
       | "endgame"
       | "getAllActive"
+      | "getAllDrawnOf"
+      | "getAllLostOf"
+      | "getAllPlayedOf"
+      | "getAllWonOf"
+      | "getDrawPercentageOf"
       | "getGame"
+      | "getLoosePercentageOf"
       | "getState"
+      | "getTotalGamesDrawnOf"
+      | "getTotalLostOf"
+      | "getTotalPlayedOf"
+      | "getTotalWonOf"
+      | "getWLOf"
+      | "getWinPercentageOf"
       | "joinGame"
       | "latestGame"
       | "owner"
@@ -96,12 +120,60 @@ export interface BattleInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getAllDrawnOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllLostOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllPlayedOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllWonOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDrawPercentageOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getGame",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getLoosePercentageOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getState",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTotalGamesDrawnOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTotalLostOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTotalPlayedOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTotalWonOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getWLOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getWinPercentageOf",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "joinGame",
@@ -151,8 +223,53 @@ export interface BattleInterface extends utils.Interface {
     functionFragment: "getAllActive",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllDrawnOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllLostOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllPlayedOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllWonOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getDrawPercentageOf",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getGame", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getLoosePercentageOf",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getState", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getTotalGamesDrawnOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTotalLostOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTotalPlayedOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTotalWonOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getWLOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getWinPercentageOf",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "joinGame", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "latestGame", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
@@ -282,13 +399,73 @@ export interface Battle extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber[], BigNumber[]]>;
 
+    getAllDrawnOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]]>;
+
+    getAllLostOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]]>;
+
+    getAllPlayedOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]]>;
+
+    getAllWonOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]]>;
+
+    getDrawPercentageOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     getGame(
       _id: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber, string, string, string]>;
 
+    getLoosePercentageOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     getState(
       _id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getTotalGamesDrawnOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getTotalLostOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getTotalPlayedOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getTotalWonOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getWLOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getWinPercentageOf(
+      _add: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -375,13 +552,73 @@ export interface Battle extends BaseContract {
     overrides?: CallOverrides
   ): Promise<[BigNumber[], BigNumber[]]>;
 
+  getAllDrawnOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
+  getAllLostOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
+  getAllPlayedOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
+  getAllWonOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
+  getDrawPercentageOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   getGame(
     _id: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<[BigNumber, BigNumber, string, string, string]>;
 
+  getLoosePercentageOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   getState(
     _id: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getTotalGamesDrawnOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getTotalLostOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getTotalPlayedOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getTotalWonOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getWLOf(
+    _add: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getWinPercentageOf(
+    _add: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -474,13 +711,73 @@ export interface Battle extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber[], BigNumber[]]>;
 
+    getAllDrawnOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
+
+    getAllLostOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
+
+    getAllPlayedOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
+
+    getAllWonOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
+
+    getDrawPercentageOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getGame(
       _id: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber, string, string, string]>;
 
+    getLoosePercentageOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getState(
       _id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTotalGamesDrawnOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTotalLostOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTotalPlayedOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTotalWonOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getWLOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getWinPercentageOf(
+      _add: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -592,13 +889,73 @@ export interface Battle extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getAllDrawnOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getAllLostOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getAllPlayedOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getAllWonOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getDrawPercentageOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getGame(
       _id: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getLoosePercentageOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getState(
       _id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTotalGamesDrawnOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTotalLostOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTotalPlayedOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTotalWonOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getWLOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getWinPercentageOf(
+      _add: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -677,13 +1034,73 @@ export interface Battle extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getAllDrawnOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getAllLostOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getAllPlayedOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getAllWonOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getDrawPercentageOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getGame(
       _id: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getLoosePercentageOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getState(
       _id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTotalGamesDrawnOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTotalLostOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTotalPlayedOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTotalWonOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getWLOf(
+      _add: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getWinPercentageOf(
+      _add: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
