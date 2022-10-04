@@ -404,7 +404,7 @@ export interface Battle extends BaseContract {
     getAllActive(
       _start: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber[], BigNumber[], BigNumber[]]>;
+    ): Promise<[BigNumber[], BigNumber[], BigNumber[], BigNumber]>;
 
     getAllDrawnOf(
       _add: PromiseOrValue<string>,
@@ -562,7 +562,7 @@ export interface Battle extends BaseContract {
   getAllActive(
     _start: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<[BigNumber[], BigNumber[], BigNumber[]]>;
+  ): Promise<[BigNumber[], BigNumber[], BigNumber[], BigNumber]>;
 
   getAllDrawnOf(
     _add: PromiseOrValue<string>,
@@ -726,7 +726,7 @@ export interface Battle extends BaseContract {
     getAllActive(
       _start: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber[], BigNumber[], BigNumber[]]>;
+    ): Promise<[BigNumber[], BigNumber[], BigNumber[], BigNumber]>;
 
     getAllDrawnOf(
       _add: PromiseOrValue<string>,
