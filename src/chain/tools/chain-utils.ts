@@ -137,7 +137,6 @@ export const checkGameStatusInterval = (
         generateGameURL(gameId, account, "USER", "", provider);
       }
     }
-
   }, 10 * 1000);
 };
 

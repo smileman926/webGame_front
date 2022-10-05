@@ -70,15 +70,11 @@ export const PlayerItem = ({ game, index }: PlayerItemProps) => {
     }
   };
 
-  const findPlayersText = (player: GameType): void => {
-    if (player.state === GameStatus.HASNOTPLAYER) {
+  const findPlayersText = (game: GameType): void => {
+    if (game.state === GameStatus.HASNOTPLAYER) {
       setPlayersText("HASNOTPLAYER");
     } else {
-      setPlayersText(
-        `${makeAddressShort(player.player1)} vs ${makeAddressShort(
-          player.player2
-        )} `
-      );
+      setPlayersText(`${game.id} - ${makeAddressShort(game.player1)} `);
     }
   };
 

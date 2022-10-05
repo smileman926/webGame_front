@@ -7,5 +7,6 @@ export interface GameType {
   stakes: BigNumber;
   player1: string;
   player2: string;
+  operator: string;
   winner: string;
 }

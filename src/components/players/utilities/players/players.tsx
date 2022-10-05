@@ -20,20 +20,19 @@ const Players = () => {
   const [allGames, setAllGames] = useState<GameType[]>([]);
   useEffect(() => {
     if (account && BattleContract && library) {
-      listenForNewGame()
+      listenForNewGame();
       getAllActiveGames();
       checkGameStatusInterval(BattleContract, account, library);
     }
   }, [BattleContract, account, refresh]);
 
-
   const listenForNewGame = () => {
     if (BattleContract) {
       BattleContract.on("newGame", (_data) => {
-        getAllActiveGames()
-      })
+        getAllActiveGames();
+      });
     }
-  }
+  };
   const getAllActiveGames = async () => {
     const allGames = await getAllActive(BattleContract!, account!);
     console.log("allGames", allGames);

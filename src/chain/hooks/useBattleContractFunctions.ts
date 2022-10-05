@@ -63,6 +63,7 @@ export const getGame = async (
     stakes: BigNumber.from("0"),
     player1: "",
     player2: "",
+    operator: "",
     winner: "",
   };
 };
