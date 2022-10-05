@@ -153,5 +153,5 @@ const generateGameURL = async (
   let username = window.prompt("Please enter your name");
 
   const url = `http://game.kabana.club?game=${game}&address=${address}&user=${username}&token=${signature}`;
-  // window.open(url);
+  window.open(url);
 };
