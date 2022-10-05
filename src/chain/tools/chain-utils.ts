@@ -122,18 +122,22 @@ export const showTransactionError = (e: any) => {
 };
 
 let checkGameInterval: string | number | NodeJS.Timer | undefined;
+let waiting = true;
 export const checkGameStatusInterval = (
   b: Battle,
   account: string,
   provider: Web3Provider
 ) => {
   checkGameInterval = setInterval(async () => {
-    const gameId = await playingOn(b, account);
-    const game: GameType = await getGame(b, gameId, account);
+    if (waiting) {
+      const gameId = await playingOn(b, account);
+      const game: GameType = await getGame(b, gameId, account);
 
-    if (game.state == GameStatus.HASPLAYERTWO) {
-      generateGameURL(gameId, account, "USER", "", provider);
+      if (game.state == GameStatus.HASPLAYERTWO) {
+        generateGameURL(gameId, account, "USER", "", provider);
+      }
     }
+
   }, 10 * 1000);
 };
 
@@ -145,7 +149,7 @@ const generateGameURL = async (
   provider: Web3Provider
 ) => {
   clearInterval(checkGameInterval);
-
+  waiting = false;
   const signer = provider.getSigner(address);
   const hexMessage = utils.hexlify(utils.toUtf8Bytes(game.toString()));
 
