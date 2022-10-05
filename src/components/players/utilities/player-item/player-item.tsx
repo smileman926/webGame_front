@@ -8,7 +8,10 @@ import { makeAddressShort } from "../../../../utils/account-utils";
 import { weiToEther } from "../../../../chain/tools/chain-utils";
 import { BigNumber } from "ethers";
 import { BATTLE_ADDRESS } from "../../../../chain/constances";
-import { joinGame } from "../../../../chain/hooks/useBattleContractFunctions";
+import {
+  cancelGame,
+  joinGame,
+} from "../../../../chain/hooks/useBattleContractFunctions";
 import {
   approve,
   allowance,
@@ -39,13 +42,21 @@ export const PlayerItem = ({ game, index }: PlayerItemProps) => {
         setBtnText("FINISHED");
       }
       if (game.state === GameStatus.HASPLAYERTWO) {
-        setBtnText("IN PROGRESS");
+        if (game.player1 == account || game.player2 == account) {
+          setBtnText("CANCEL");
+        } else {
+          setBtnText("IN PROGRESS");
+        }
       }
     }
   }, [account, Battle]);
 
   const onAcceptButtonClick = async (game: GameType) => {
-    joinGameFunction(game);
+    if (btnText === "CANCEL") {
+      cancelGame(Battle!, account!, game.id);
+    } else {
+      joinGameFunction(game);
+    }
   };
 
   const joinGameFunction = async (game: GameType) => {
@@ -103,7 +114,7 @@ export const PlayerItem = ({ game, index }: PlayerItemProps) => {
             onClick={() => {
               onAcceptButtonClick(game);
             }}
-            disabled={btnText !== "APPROVE"}
+            disabled={btnText !== "APPROVE" && btnText !== "CANCEL"}
             color="var(--color-green-3)"
           >
             {btnText}

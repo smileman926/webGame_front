@@ -1,5 +1,15 @@
+import { Web3Provider } from "@ethersproject/providers";
 import { BigNumber, ethers } from "ethers";
 import { isMobile } from "react-device-detect";
+import {
+  Battle,
+  joinedGameEvent,
+  newGameEvent,
+} from "../contracts/typechains/Battle";
+import { GameStatus } from "../enums/game-status.enum";
+import { getGame, playingOn } from "../hooks/useBattleContractFunctions";
+import { GameType } from "../types/game.type";
+import { utils } from "ethers";
 
 export const connectMetamaskOnLoad = () => {
   if (isMobile) {
@@ -109,4 +119,39 @@ export const showTransactionError = (e: any) => {
   }
 
   alert(`Revert >> ${message}`);
+};
+
+let checkGameInterval: string | number | NodeJS.Timer | undefined;
+export const checkGameStatusInterval = (
+  b: Battle,
+  account: string,
+  provider: Web3Provider
+) => {
+  checkGameInterval = setInterval(async () => {
+    const gameId = await playingOn(b, account);
+    const game: GameType = await getGame(b, gameId, account);
+
+    if (game.state == GameStatus.HASPLAYERTWO) {
+      generateGameURL(gameId, account, "USER", "", provider);
+    }
+  }, 10 * 1000);
+};
+
+const generateGameURL = async (
+  game: number,
+  address: string,
+  user: string,
+  token: string,
+  provider: Web3Provider
+) => {
+  clearInterval(checkGameInterval);
+
+  const signer = provider.getSigner(address);
+  const hexMessage = utils.hexlify(utils.toUtf8Bytes(game.toString()));
+
+  const signature = await signer.signMessage(hexMessage);
+  let username = window.prompt("Please enter your name");
+
+  const url = `http://game.kabana.club?game=${game}&address=${address}&user=${username}&token=${signature}`;
+  // window.open(url);
 };

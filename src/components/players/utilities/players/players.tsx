@@ -11,24 +11,26 @@ import {
 import useBattleContract from "../../../../chain/hooks/useBattleContract";
 import { GameType } from "../../../../chain/types/game.type";
 import { PlayerItem } from "../player-item/player-item";
+import { checkGameStatusInterval } from "../../../../chain/tools/chain-utils";
 
 const Players = () => {
-  const { account } = useWeb3React<Web3Provider>();
-  const Battle = useBattleContract();
+  const { account, library } = useWeb3React<Web3Provider>();
+  const BattleContract = useBattleContract();
   const [refresh, setRefresh] = useState(false);
   const [allGames, setAllGames] = useState<GameType[]>([]);
   useEffect(() => {
-    if (account && Battle) {
+    if (account && BattleContract && library) {
       getAllActiveGames();
+      checkGameStatusInterval(BattleContract, account, library);
     }
-  }, [Battle, account, refresh]);
+  }, [BattleContract, account, refresh]);
 
   const getAllActiveGames = async () => {
-    const allGames = await getAllActive(Battle!, account!);
+    const allGames = await getAllActive(BattleContract!, account!);
     console.log("allGames", allGames);
     const gamesDetails: GameType[] = [];
     for await (const item of allGames) {
-      const gameDetails = await getGame(Battle!, item, account!);
+      const gameDetails = await getGame(BattleContract!, item, account!);
       gamesDetails.push(gameDetails!);
     }
     setAllGames(gamesDetails);

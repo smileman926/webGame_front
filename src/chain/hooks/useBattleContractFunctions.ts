@@ -100,3 +100,36 @@ const findGameStatus = (status: number): GameStatus => {
       return GameStatus.HASNOTPLAYER;
   }
 };
+
+export const playingOn = async (
+  battle: Battle,
+  account: string
+): Promise<number> => {
+  try {
+    console.log("txtxtxtx account", account);
+    const tx = await battle.playingOn(
+      account,
+      await getTransactionOptions(account)
+    );
+    console.log("txtxtxtx", tx);
+    return Number(tx);
+  } catch (e) {
+    console.log(e);
+  }
+  return 0;
+};
+
+export const cancelGame = async (
+  battle: Battle,
+  account: string,
+  gameId: number
+): Promise<void> => {
+  try {
+    const tx = await battle.cancel(
+      gameId,
+      await getTransactionOptions(account)
+    );
+  } catch (e) {
+    console.log(e);
+  }
+};
