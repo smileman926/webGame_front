@@ -154,6 +154,6 @@ const generateGameURL = async (
   const signature = await signer.signMessage(hexMessage);
   // let username = window.prompt("Please enter your name");
 
-  const url = `http://game.kabana.club?game=${gameId}&address=${game.player1}&user=${game.player1}&token=${signature}`;
+  const url = `http://game.kabana.club?game=${gameId}&address=${game.player1}&user=${game.player2}&token=${signature}`;
   window.open(url);
 };
