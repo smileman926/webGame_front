@@ -134,27 +134,26 @@ export const checkGameStatusInterval = (
       const game: GameType = await getGame(b, gameId, account);
 
       if (game.state == GameStatus.HASPLAYERTWO) {
-        generateGameURL(gameId, account, "USER", "", provider);
+        generateGameURL(gameId, account, game, provider);
       }
     }
   }, 10 * 1000);
 };
 
 const generateGameURL = async (
-  game: number,
+  gameId: number,
   address: string,
-  user: string,
-  token: string,
-  provider: Web3Provider
+
+  game: GameType, provider: Web3Provider
 ) => {
   clearInterval(checkGameInterval);
   waiting = false;
   const signer = provider.getSigner(address);
-  const hexMessage = utils.hexlify(utils.toUtf8Bytes(game.toString()));
+  const hexMessage = utils.hexlify(utils.toUtf8Bytes(gameId.toString()));
 
   const signature = await signer.signMessage(hexMessage);
   // let username = window.prompt("Please enter your name");
 
-  const url = `http://game.kabana.club?game=${game}&address=${address}&user=${address}&token=${signature}`;
+  const url = `http://game.kabana.club?game=${gameId}&address=${game.player1}&user=${game.player1}&token=${signature}`;
   window.open(url);
 };
