@@ -81,7 +81,7 @@ export const joinGame = async (
     const res = await tx.wait();
     return res as unknown as boolean;
   } catch (e) {
-    console.log(e);
+    console.log('joinGameFunction', e);
   }
   return false;
 };

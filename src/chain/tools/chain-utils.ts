@@ -102,7 +102,7 @@ export const getTransactionOptions = async (
   };
 
   if (value != 0) {
-    const pure = etherToWei(value).add(gasLimit * gasPrice);
+    const pure = etherToWei(value);
     overrides["value"] = pure;
   }
   return overrides;
@@ -148,12 +148,28 @@ const generateGameURL = async (
 ) => {
   clearInterval(checkGameInterval);
   waiting = false;
-  const signer = provider.getSigner(address);
-  const hexMessage = utils.hexlify(utils.toUtf8Bytes(gameId.toString()));
 
-  const signature = await signer.signMessage(hexMessage);
-  // let username = window.prompt("Please enter your name");
+  try {
+    const signer = provider.getSigner(address);
 
-  const url = `http://game.kabana.club?game=${gameId}&address=${game.player1}&user=${game.player2}&token=${signature}`;
-  window.open(url);
+    const signature = await signer.signMessage(gameId.toString());
+    console.log("signature", signature)
+    // let username = window.prompt("Please enter your name");
+
+    const url = `http://game.kabana.club?game=${gameId}&address=${address}&user=${address}&token=${signature}`;
+    window.open(url);
+  } catch (e) {
+    console.log(e)
+  }
+
+
+
+  // const signer = provider.getSigner(address);
+  // const hexMessage = utils.hexlify(utils.toUtf8Bytes(gameId.toString()));
+
+  // const signature = await signer.signMessage(hexMessage);
+  // // let username = window.prompt("Please enter your name");
+
+  // const url = `http://game.kabana.club?game=${gameId}&address=${game.player1}&user=${game.player2}&token=${signature}`;
+  // window.open(url);
 };

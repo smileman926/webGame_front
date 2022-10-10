@@ -63,9 +63,15 @@ export const PlayerItem = ({ game, index }: PlayerItemProps) => {
     setIsLoading(true);
     try {
       const a = await approve(MainToken!, BATTLE_ADDRESS, game.stakes);
+      console.log('joinGameFunction a', a)
+
       const join = await joinGame(Battle!, game.id, account!);
+      console.log('joinGameFunction join', join)
+
       setIsLoading(false);
     } catch (e) {
+      console.log('joinGameFunction e', e)
+
       setIsLoading(false);
     }
   };
